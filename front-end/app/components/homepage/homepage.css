@@ -1,0 +1,90 @@
+.dot-animation {
+  width: 25px;
+  height: 25px;
+  background-color: black;
+  border-radius: 50%;
+
+  position: relative;
+  transform: translateY(6px);
+}
+
+.card-list {
+  opacity: 0;
+  animation: fadeIn 0.4s forwards;
+  animation-delay: 1s;
+}
+
+.card-list2 {
+  opacity: 0;
+  animation: fadeIn 0.4s forwards;
+}
+
+.card-button {
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.06), 0px 0px 5px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+
+.chat-textbox-container {
+  position: relative;
+  margin: 0 auto;
+  max-width: 768px;
+}
+
+
+.custom-scrollbar {
+  scrollbar-color: rgba(0, 0, 0, 0.03) transparent;
+}
+
+.custom-scrollbar:hover {
+  scrollbar-color: rgba(0, 0, 0, 0.07) transparent;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .model-selector-button {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+  }
+
+  .card-list {
+    display: flex;
+    flex-wrap: wrap; /* Allow cards to wrap */
+    justify-content: space-between; /* Equal space between cards */
+    gap: 16px; /* Fixed gap for mobile */
+    margin: 10px;
+  }
+
+  .card-item {
+    flex: 1 1 calc(50% - 8px); /* Ensure two items per row with consistent spacing */
+    max-width: calc(50% - 8px); /* Prevent cards from exceeding their allowed space */
+  }
+
+  .card-button {
+    height: auto; /* Allow dynamic height for better adaptability */
+    width: 100%; /* Full width for the card */
+  }
+}
+
+
+@media (max-width: 511px) {
+  .chat-textbox-container {
+    position: fixed;
+    margin-bottom: 40px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 10px;
+  }
+}

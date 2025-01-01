@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-end
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front-end
+  template:
+    metadata:
+      labels:
+        app: front-end
+    spec:
+      containers:
+      - name: front-end
+        image: us-central1-docker.pkg.dev/mockgpt-441715/mockgpt-repo/front-end:v2
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "development"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-end-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    app: front-end

@@ -1,0 +1,71 @@
+.container {
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+  }
+  
+  .authButtons {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .authButton {
+    background-color: #000;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .main {
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .searchContainer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  
+  .searchBar {
+    width: 60%;
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    border: 2px solid #eaeaea;
+    border-radius: 8px;
+  }
+  
+  .buttonGroup {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .actionButton {
+    background-color: #eaeaea;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .footer {
+    text-align: center;
+    padding: 2rem;
+  }
+  
