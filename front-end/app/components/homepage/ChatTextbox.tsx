@@ -5,9 +5,12 @@ import { createWebSocketConnection, onMessage, sendMessage } from "./openAIAPI";
 interface ChatTextboxProps {
   message: string;
   setMessage: React.Dispatch<React.SetStateAction<string>>;
+  setResponse: React.Dispatch<React.SetStateAction<string>>;
+  onSend: () => void;
+  className?: string;
 }
 
-const ChatTextbox: React.FC<ChatTextboxProps> = ({ message, setMessage }) => {
+const ChatTextbox: React.FC<ChatTextboxProps> = ({ message, setMessage, setResponse, onSend, className }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const socketRef = useRef<WebSocket | null>(null);
 
@@ -30,28 +33,29 @@ const ChatTextbox: React.FC<ChatTextboxProps> = ({ message, setMessage }) => {
     adjustTextareaHeight();
   }, [message]);
 
-  const [response, setResponse] = useState<string>("");
+  const [response, setLocalResponse] = useState<string>("");
   const [messages, setMessages] = useState<string[]>([]);
-  const [input, setInput] = useState('');
 
   useEffect(() => {
     socketRef.current = createWebSocketConnection('ws://localhost:5000');
     
     onMessage(socketRef.current, (message) => {
+      setLocalResponse(prev => prev + message);
       setResponse(prev => prev + message);
     });
 
     return () => {
       socketRef.current?.close();
     };
-  }, []);
+  }, [setResponse]);
 
   const handleSend = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // Prevent form submission
-    if (socketRef.current && input.trim()) {
-      sendMessage(socketRef.current, input);
-      setInput('');
+    if (socketRef.current && message.trim()) {
+      sendMessage(socketRef.current, message);
+      setMessages([...messages, message]); // Add the input message to the messages array
       setMessage('');
+      onSend();
     }
   };
 
@@ -60,7 +64,7 @@ const ChatTextbox: React.FC<ChatTextboxProps> = ({ message, setMessage }) => {
   }, [response]);
 
   return (
-    <div className="chat-textbox-container w-full max-w-[768px] translate-y-[2px] mx-auto">
+    <div className={`translate-y-[2px] mx-auto ${className}`}>
       <div className="flex justify-center">
         <form
           className="w-full"
@@ -87,8 +91,8 @@ const ChatTextbox: React.FC<ChatTextboxProps> = ({ message, setMessage }) => {
                         ref={textareaRef}
                         className="block w-full resize-none border-0 focus:outline-none bg-transparent px-0 py-2 text-token-text-primary placeholder-[#5C5C5C] w-[700px] leading-6 custom-scrollbar"
                         autoFocus
-                        onChange={(e) => setInput(e.target.value)}
-                        value={input}
+                        onChange={(e) => setMessage(e.target.value)}
+                        value={message}  // Use the message prop here
                         placeholder="Message ChatGPT"
                       />
                     </div>
@@ -128,7 +132,7 @@ const ChatTextbox: React.FC<ChatTextboxProps> = ({ message, setMessage }) => {
                     type="button"
                     aria-label="Send prompt"
                     data-testid="send-button"
-                    disabled={!input.trim()}
+                    disabled={!message.trim()}
                     className="flex h-8 w-8 items-center justify-center rounded-full hover:opacity-70 focus-visible:outline-none focus-visible:outline-black disabled:text-[#f4f4f4] disabled:hover:opacity-100 dark:focus-visible:outline-white disabled:dark:bg-token-text-quaternary dark:disabled:text-token-main-surface-secondary bg-black text-white dark:bg-white dark:text-black disabled:bg-[#D7D7D7]"
                     onClick={handleSend}
                   >
@@ -149,18 +153,6 @@ const ChatTextbox: React.FC<ChatTextboxProps> = ({ message, setMessage }) => {
                     </svg>
                   </button>
                 </div>
-
-                <div>
-                  <div>
-                      {messages.map((message, index) => (
-                          <div key={index}>{message}</div>
-                      ))}
-                  </div>
-              </div>
-              <div className="response-display">
-                <p>{response}</p>
-              </div>
-
               </div>
             </div>
           </div>

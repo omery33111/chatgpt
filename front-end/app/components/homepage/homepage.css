@@ -40,6 +40,20 @@
   scrollbar-color: rgba(0, 0, 0, 0.07) transparent;
 }
 
+.chat-textbox-container-after {
+  position: fixed;
+  margin-bottom: 34px;
+  bottom: 0;
+  left: 23px;
+  right: 0;
+  z-index: 1000;
+  width: 744px;
+}
+
+
+.chat-textbox-container-before {
+  width: 768px;
+}
 
 @keyframes fadeIn {
   from {
@@ -75,6 +89,7 @@
     width: 100%; /* Full width for the card */
   }
 }
+
 
 
 @media (max-width: 511px) {
