@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
+import EditTextbox from '../utils/EditTextbox';
 
 interface ChatResponseProps {
     userMessage: string;
@@ -65,6 +66,16 @@ const ChatResponse: React.FC<ChatResponseProps> = ({ userMessage, responseMessag
             </svg>
         );
 
+        const [isLoading, setIsLoading] = useState(true);
+
+        useEffect(() => {
+          // Simulate loading delay
+          const timer = setTimeout(() => setIsLoading(false), 3000);
+          return () => clearTimeout(timer);
+        }, []);
+
+        const [isHovered, setIsHovered] = useState(false);
+
     return (
         <>
         <article className="w-full scroll-mb-[var(--thread-trailing-height,150px)] text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]" dir="auto" data-testid="conversation-turn-2" data-scroll-anchor="false">
@@ -75,11 +86,32 @@ const ChatResponse: React.FC<ChatResponseProps> = ({ userMessage, responseMessag
                 <div className="flex-col gap-1 md:gap-3">
                   <div className="flex max-w-full flex-col flex-grow">
                     <div data-message-author-role="user" data-message-id={"msg-${index}"} dir="auto" className="min-h-8 text-message flex w-full flex-col items-end gap-2 whitespace-normal break-words text-start [.text-message+&amp;]:mt-5">
-                      <div className="flex w-full flex-col gap-1 empty:hidden items-end rtl:items-start">
+                      
+                      <div className="flex w-full flex-col gap-1 empty:hidden items-end rtl:items-start" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
                         <div className="relative max-w-[var(--user-chat-width,70%)] rounded-3xl bg-token-message-surface px-5 py-2.5" style={{ backgroundColor: "#E8E8E880" }}>
+                      
+                      {/* add isLogged to isResponseComplete && isHovered term */}
+                      {isResponseComplete && isHovered && (
+                      <span className="" data-state="closed" style = {{position: "absolute", transform: "translateX(-63px) translateY(-6px)"}}>
+                                <BootstrapTooltip title="Edit message" placement="bottom">
+                                    <button onClick={handleCopyClick} className="rounded-full text-token-text-secondary enabled:hover:bg-[rgba(0,0,0,0.030)] h-[37px] w-[37px]" aria-label="Copy" data-testid="copy-turn-action-button">
+                                        <span className="flex h-[19px] w-[19px] items-center justify-center">
+                                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="icon-md" style = {{transform: "translateX(9px)"}}>
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M13.2929 4.29291C15.0641 2.52167 17.9359 2.52167 19.7071 4.2929C21.4784 6.06414 21.4784 8.93588 19.7071 10.7071L18.7073 11.7069L11.6135 18.8007C10.8766 19.5376 9.92793 20.0258 8.89999 20.1971L4.16441 20.9864C3.84585 21.0395 3.52127 20.9355 3.29291 20.7071C3.06454 20.4788 2.96053 20.1542 3.01362 19.8356L3.80288 15.1C3.9742 14.0721 4.46243 13.1234 5.19932 12.3865L13.2929 4.29291ZM13 7.41422L6.61353 13.8007C6.1714 14.2428 5.87846 14.8121 5.77567 15.4288L5.21656 18.7835L8.57119 18.2244C9.18795 18.1216 9.75719 17.8286 10.1993 17.3865L16.5858 11L13 7.41422ZM18 9.5858L14.4142 6.00001L14.7071 5.70712C15.6973 4.71693 17.3027 4.71693 18.2929 5.70712C19.2831 6.69731 19.2831 8.30272 18.2929 9.29291L18 9.5858Z" fill="#5D5D5D">
+                                            </path>
+                                          </svg>
+                                        </span>
+                                    </button>
+                                </BootstrapTooltip>
+                      </span>
+                      )}
                           <div className="whitespace-pre-wrap">{userMessage}</div>
                         </div>
                       </div>
+
+                      
+
+
                     </div>
                   </div>
                 </div>
@@ -112,7 +144,14 @@ const ChatResponse: React.FC<ChatResponseProps> = ({ userMessage, responseMessag
                   <div data-message-author-role="assistant" data-message-id="2858cae1-ecd6-4f4e-9c84-eb07b01da579" dir="auto" className="min-h-8 text-message flex w-full flex-col items-end gap-2 whitespace-normal break-words text-start [.text-message+&amp;]:mt-5" data-message-model-slug="gpt-4o-mini">
                     <div className="flex w-full flex-col gap-1 empty:hidden first:pt-[3px]">
                       <div className="markdown prose w-full break-words dark:prose-invert light leading-[1.75]">
-                        <p style={{ wordSpacing: '-0.25px' }}>{responseMessage}</p>
+
+                      <div className="chat-response-container">
+                        <div className="message-container">
+                          <span>{responseMessage}</span>
+                          {!isResponseComplete && (<div className="dot-animation2 inline-block mb-[2px] animate-blink"></div>)}
+                        </div>
+                      </div>
+
                       </div>
                       
                       {isResponseComplete && (
@@ -121,7 +160,7 @@ const ChatResponse: React.FC<ChatResponseProps> = ({ userMessage, responseMessag
                             <div className="flex items-center">
                                 <span className="" data-state="closed">
                                 <BootstrapTooltip title="Chat" placement="bottom">
-                                    <button onClick={handleCopyClick} style = {{marginTop: "4px"}} className="rounded-lg text-token-text-secondary enabled:hover:bg-[rgba(0,0,0,0.030)]" aria-label="Copy" data-testid="copy-turn-action-button">
+                                    <button onClick={handleCopyClick} className="mt-[4px] rounded-lg text-token-text-secondary enabled:hover:bg-[rgba(0,0,0,0.030)]" aria-label="Copy" data-testid="copy-turn-action-button">
                                         <span className="flex h-[30px] w-[30px] items-center justify-center">
                                             {isCopied ? <CheckIcon /> : <CopyIcon />}
                                         </span>
