@@ -24,7 +24,7 @@ const AnimatedText = () => {
   }, []);
 
   return (
-    <h1 className="text-center text-3xl font-semibold text-gray-800">
+    <h1 className="text-center text-3xl font-semibold text-gray-800" style = {{transform: "translateY(12dvh)"}}>
       <span className="inline-block">{displayText}</span>
       {displayText.length < fullText.length && (
         <>

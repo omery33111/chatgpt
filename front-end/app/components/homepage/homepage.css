@@ -62,7 +62,7 @@
 
 .chat-textbox-container-after {
   position: fixed;
-  margin-bottom: 34px;
+  margin-bottom: 24px;
   bottom: 0;
   left: 23px;
   right: 0;
@@ -73,6 +73,14 @@
 
 .chat-textbox-container-before {
   width: 768px;
+}
+
+.scrollbarDiv {
+  overflow-y: auto;
+  max-height: 780px;
+  margin-bottom: 12dvh;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 @keyframes fadeIn {

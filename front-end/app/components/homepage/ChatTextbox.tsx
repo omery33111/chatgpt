@@ -5,7 +5,7 @@ import { createWebSocketConnection, onMessage, sendMessage } from "./openAIAPI";
 interface ChatTextboxProps {
   message: string;
   setMessage: React.Dispatch<React.SetStateAction<string>>;
-  setResponse: React.Dispatch<React.SetStateAction<string>>;
+  setResponse: (value: string) => void;
   onSend: () => void;
   className?: string;
 }
@@ -33,15 +33,25 @@ const ChatTextbox: React.FC<ChatTextboxProps> = ({ message, setMessage, setRespo
     adjustTextareaHeight();
   }, [message]);
 
-  const [response, setLocalResponse] = useState<string>("");
+  const [localResponse, setLocalResponse] = useState<string>("");
   const [messages, setMessages] = useState<string[]>([]);
+  const responseBufferRef = useRef<string>("");
 
   useEffect(() => {
     socketRef.current = createWebSocketConnection('ws://localhost:5000');
     
     onMessage(socketRef.current, (message) => {
-      setLocalResponse(prev => prev + message);
-      setResponse(prev => prev + message);
+      // Accumulate the message in the buffer
+      responseBufferRef.current += message;
+
+      // Check if we have a complete sentence or chunk
+      if (message.includes('.') || message.includes('!') || message.includes('?') || message.includes('\n')) {
+        // Update the response with the accumulated buffer
+        setResponse(responseBufferRef.current);
+      } else if (message.endsWith(' ')) {
+        // If we have a space, it's probably safe to update as well
+        setResponse(responseBufferRef.current);
+      }
     });
 
     return () => {
@@ -50,21 +60,22 @@ const ChatTextbox: React.FC<ChatTextboxProps> = ({ message, setMessage, setRespo
   }, [setResponse]);
 
   const handleSend = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
     if (socketRef.current && message.trim()) {
+      responseBufferRef.current = ""; // Reset the buffer
       sendMessage(socketRef.current, message);
-      setMessages([...messages, message]); // Add the input message to the messages array
       setMessage('');
       onSend();
     }
   };
 
+
   useEffect(() => {
     adjustTextareaHeight();
-  }, [response]);
+  }, [localResponse]);
 
   return (
-    <div className={`translate-y-[2px] mx-auto ${className}`}>
+    <div className={`translate-y-[-6px] mx-auto ${className}`}>
       <div className="flex justify-center">
         <form
           className="w-full"
@@ -87,13 +98,26 @@ const ChatTextbox: React.FC<ChatTextboxProps> = ({ message, setMessage, setRespo
                 <div className="flex items-center px-2">
                   <div className="max-w-full flex-1">
                     <div className="text-token-text-primary" translate="no" id="prompt-textarea">
-                      <textarea
+                    <textarea
                         ref={textareaRef}
                         className="block w-full resize-none border-0 focus:outline-none bg-transparent px-0 py-2 text-token-text-primary placeholder-[#5C5C5C] w-[700px] leading-6 custom-scrollbar"
                         autoFocus
                         onChange={(e) => setMessage(e.target.value)}
                         value={message}  // Use the message prop here
                         placeholder="Message ChatGPT"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            if (message.trim()) {
+                              responseBufferRef.current = "";
+                              if (socketRef.current) {
+                                sendMessage(socketRef.current, message);
+                                setMessage('');
+                                onSend();
+                              }
+                            }
+                          }
+                        }}
                       />
                     </div>
                   </div>

@@ -119,7 +119,7 @@ const ChatResponse: React.FC<ChatResponseProps> = ({ userMessage, responseMessag
             </div>
           </div>
         </article>
-    <article style={{ height: '66dvh' }} className="w-full scroll-mb-[var(--thread-trailing-height,150px)] text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]" dir="auto" data-testid="conversation-turn-3" data-scroll-anchor="false">
+    <article className="w-full scroll-mb-[var(--thread-trailing-height,150px)] text-token-text-primary focus-visible:outline-2 focus-visible:outline-offset-[-4px]" dir="auto" data-testid="conversation-turn-3" data-scroll-anchor="false">
       <h6 className="sr-only">ChatGPT said:</h6>
       <div className="m-auto text-base py-[18px] px-3 md:px-4 w-full md:px-5 lg:px-4 xl:px-5" style={{ marginTop: "-26px" }}>
         <div className="mx-auto flex flex-1 gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl">
@@ -159,7 +159,7 @@ const ChatResponse: React.FC<ChatResponseProps> = ({ userMessage, responseMessag
                         <div className="items-center justify-start rounded-xl p-1 flex">
                             <div className="flex items-center">
                                 <span className="" data-state="closed">
-                                <BootstrapTooltip title="Chat" placement="bottom">
+                                <BootstrapTooltip title="Copy" placement="bottom">
                                     <button onClick={handleCopyClick} className="mt-[4px] rounded-lg text-token-text-secondary enabled:hover:bg-[rgba(0,0,0,0.030)]" aria-label="Copy" data-testid="copy-turn-action-button">
                                         <span className="flex h-[30px] w-[30px] items-center justify-center">
                                             {isCopied ? <CheckIcon /> : <CopyIcon />}
