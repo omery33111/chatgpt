@@ -53,7 +53,7 @@ const MainContent: React.FC<MainContentProps> = ({ isMessageSent, setIsMessageSe
   }, []);
 
   return (
-    <main className="flex-grow flex flex-col justify-center items-center text-center gap-[17px]" style = {{marginTop: isMessageSent? "50px" : "-104px"}}>
+    <main className="flex-grow flex flex-col justify-center items-center text-center gap-[17px]" style = {{marginTop: isMessageSent? "50px" : "-127px"}}>
       {!isMessageSent && <AnimatedText />}
 
       {isMessageSent && messageCount === 1 && <WarningTab />}

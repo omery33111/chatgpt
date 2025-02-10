@@ -10,17 +10,11 @@
     text-align: center;
 }
 
-.oai-header {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    margin-top: 32px;
-}
 
 .oai-footer {
     text-align: center;
     padding: 0 0 20px;
-    transform: translateY(-1.6vh);
+    transform: translateY(2.7vh);
     font-size: 14px;
     display: flex;
     align-items: center;
@@ -73,7 +67,7 @@
     justify-items: center;
     grid-column-gap: 160px;
     column-gap: 160px;
-    padding: 83px;
+    padding: 43px;
     width: 100%;
     font-family: Söhne,-apple-system,BlinkMacSystemFont,Helvetica,sans-serif;
 }

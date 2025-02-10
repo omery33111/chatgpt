@@ -11,6 +11,7 @@ const LoginContent = () => {
       inputRef.current.focus(); // Focus the input on page load
     }
   }, []);
+
   return (
     <main className="main-container">
       <section className="content-wrapper">

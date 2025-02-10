@@ -63,11 +63,11 @@
 .chat-textbox-container-after {
   position: fixed;
   margin-bottom: 24px;
-  bottom: 0;
-  left: 23px;
+  bottom: 1px;
+  left: 0px;
   right: 0;
   z-index: 1000;
-  width: 744px;
+  width: 768px;
 }
 
 

@@ -4,7 +4,7 @@ import InfoButton from "../utils/InfoButton";
 const MainFooter = () => {
   return (
     <div
-      className="relative w-full px-2 py-2 text-center text-xs text-token-text-secondary empty:hidden md:px-[60px] lg:absolute lg:left-0 lg:mt-0 lg:bottom-0"
+      className="relative w-full px-2 py-2 text-center text-xs text-token-text-secondary empty:hidden md:px-[60px] lg:absolute lg:left-0 lg:mt-0 lg:bottom-[42px]"
       style={{
         opacity: "1",
         willChange: "auto",
